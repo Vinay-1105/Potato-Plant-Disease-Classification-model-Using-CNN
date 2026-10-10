@@ -85,6 +85,52 @@ The application will be accessible in your web browser at `http://localhost:8501
 
 ---
 
+## Reproduce
+
+To reproduce the pipeline (data audit, leak-free split, perceptual hash near-duplicate check, training, test evaluation, and threshold calibration):
+
+### 1. Download Dataset
+- **Dataset Source**: [Kaggle PlantVillage Dataset (emmarex/plantdisease)](https://www.kaggle.com/datasets/emmarex/plantdisease)
+- Extract the 3 potato classes into `dataset/PlantVillage/`:
+  - `dataset/PlantVillage/Potato___Early_blight/` (1,000 images)
+  - `dataset/PlantVillage/Potato___Late_blight/` (1,000 images)
+  - `dataset/PlantVillage/Potato___healthy/` (152 images)
+  - **Total**: 2,152 images.
+
+### 2. Install Development Dependencies
+```bash
+pip install -r requirements-dev.txt
+```
+
+### 3. Execute Pipeline Scripts
+
+1. **Data Split & Near-Duplicate Check**:
+   ```bash
+   python training/01_split_and_phash.py
+   ```
+   Performs the stratified 80/10/10 split (seed 42), computes 64-bit perceptual hashes, checks for test duplicates, and generates `training/splits.json`.
+
+2. **Model Training** (optional; trained model is provided as `model_v2.keras`):
+   ```bash
+   python training/02_train.py
+   ```
+   Trains the baseline CNN with balanced class weights and early stopping, restoring best weights at epoch 18.
+   > **Note**: Retraining with the same seed on CPU may not give bit-identical weights. The reported results come from the committed `model_v2.keras`, and `03_evaluate.py` reproduces them.
+
+3. **Test Evaluation & Metrics Reproduction**:
+   ```bash
+   python training/03_evaluate.py
+   ```
+   Evaluates `model_v2.keras` on the 216 test images, reproducing 93.06% accuracy, macro-F1 of 0.910, the confusion matrix, and assets.
+
+4. **Confidence Threshold Analysis**:
+   ```bash
+   python training/04_threshold_analysis.py
+   ```
+   Evaluates validation and test sets across thresholds (0.6, 0.7, 0.8, 0.9).
+
+---
+
 ## Deployment
 
 The application is configured for deployment on **Streamlit Community Cloud**.
