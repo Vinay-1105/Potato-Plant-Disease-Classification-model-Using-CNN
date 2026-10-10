@@ -136,7 +136,7 @@ pip install -r requirements-dev.txt
 The application is configured for deployment on **Streamlit Community Cloud**.
 
 When deploying:
-1. Select repository and branch `improvements`.
+1. Select repository and branch `CNN`.
 2. Main file path: `app.py`.
 3. Select **Python 3.12** in advanced settings to match pinned package wheels.
 
