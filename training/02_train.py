@@ -15,8 +15,10 @@ tf.random.set_seed(SEED)
 
 REPO_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 SPLITS_FILE = os.path.join(os.path.dirname(__file__), "splits.json")
-OUTPUT_MODEL = os.path.join(REPO_DIR, "model_retrained.keras")
-HISTORY_FILE = os.path.join(os.path.dirname(__file__), "history.json")
+LOGS_DIR = os.path.join(REPO_DIR, "logs")
+os.makedirs(LOGS_DIR, exist_ok=True)
+OUTPUT_MODEL = os.path.join(LOGS_DIR, "model_retrained.keras")
+HISTORY_FILE = os.path.join(LOGS_DIR, "history_retrained.json")
 
 class_names = ['Potato___Early_blight', 'Potato___Late_blight', 'Potato___healthy']
 print(f"Target class order: {class_names}")

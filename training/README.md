@@ -17,12 +17,12 @@ This directory contains scripts to audit the dataset, split the data, train the 
 ---
 
 ### 2. `02_train.py`
-- **What it does**: Loads train and validation splits from `training/splits.json`, computes balanced class weights on the training set, defines the 4-block CNN architecture (Conv2D + MaxPooling2D layers, Dense 64, Dense 3 with softmax), and trains with EarlyStopping (`patience=7`, restoring best weights) and ReduceLROnPlateau. Saves training metrics to `training/history.json` and outputs model weights to `model_retrained.keras`.
+- **What it does**: Loads train and validation splits from `training/splits.json`, computes balanced class weights on the training set, defines the 4-block CNN architecture (Conv2D + MaxPooling2D layers, Dense 64, Dense 3 with softmax), and trains with EarlyStopping (`patience=7`, restoring best weights) and ReduceLROnPlateau. Saves training metrics to `logs/history_retrained.json` and outputs model weights to `logs/model_retrained.keras` (never overwriting committed files).
 - **How to run**:
   ```bash
   python training/02_train.py
   ```
-- **Provenance**: Original logic recovered from the execution log; edits were path-only (repo-relative paths, separator normalization, default output name of 02_train.py changed to model_retrained.keras).
+- **Provenance**: Original logic recovered from the execution log; edits were path-only (repo-relative paths, separator normalization, default outputs redirected to `logs/` as `logs/model_retrained.keras` and `logs/history_retrained.json`).
 
 ---
 
