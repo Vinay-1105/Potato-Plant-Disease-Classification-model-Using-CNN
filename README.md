@@ -148,4 +148,5 @@ When deploying:
 - **Class Imbalance in Ground Truth**: The `Healthy` class contains only 152 images in total (16 in the test set) compared to 1,000 images each for Early Blight and Late Blight.
 - **Potential Subject Duplication in Source**: In the PlantVillage collection, multiple photographs may depict the same physical leaf under slight angle variations, meaning reported evaluation scores may be optimistic.
 - **Not Field-Tested**: The model has not been validated on unconstrained, in-field farm photographs with complex backgrounds, direct sunlight, pests, or secondary infections.
+- **Out-of-Scope Detection**: The confidence threshold does not detect non-potato images. A synthetic non-potato test image was predicted as Early Blight with 100% confidence, so the app is only valid for potato leaf photos.
 - **Educational Scope**: This project is an academic learning demonstration, not an agronomic diagnostic tool. Agricultural decisions should always involve consultation with plant pathology experts.

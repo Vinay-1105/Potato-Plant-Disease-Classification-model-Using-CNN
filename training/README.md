@@ -48,4 +48,5 @@ This directory contains scripts to audit the dataset, split the data, train the 
 
 ## Verification Note
 
+01_split_and_phash.py rewrites training/splits.json with the same split (identical membership and order); only the JSON formatting differs.
 Verified: 01_split_and_phash.py regenerates a split with identical membership and order to splits.json (JSON layout differs only). Production requirements (requirements.txt) were verified in a clean environment. Dev requirements were installed on top of that environment, not in a second clean environment.
