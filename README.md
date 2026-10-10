@@ -1,85 +1,105 @@
-# Potato Disease Classification using Deep Learning
+# Potato Disease Classification using CNN
 
-**Introduction**
+An end-to-end computer vision project to classify potato leaf images into **Early Blight**, **Late Blight**, or **Healthy** using a Convolutional Neural Network (CNN) built with TensorFlow/Keras and deployed via Streamlit.
 
-In the agriculture industry, farmers often face challenges in identifying diseases in potato plants, such as early blight, late blight, or determining if the plant is healthy. This uncertainty makes it difficult for farmers to apply the appropriate fertilizers and treatments, impacting crop yield and quality. To address this issue, we have developed a deep learning model using TensorFlow to classify images of potato plants, aiding in the accurate identification of diseases. By leveraging machine learning technology, our solution aims to improve agricultural practices, optimize resource allocation, and ultimately enhance the production of healthy potato plants.
+---
 
-<br />
+## Evaluation & Measured Results
 
-**Table of Contents**
+The model was evaluated on a held-out, leak-free test set of 216 images created via stratified 80/10/10 file-level partitioning:
 
-1. Key Technologies and Skills
-2. Installation
-3. Usage
-4. Features
+- **Test Accuracy**: **93.06%** (201 / 216 images correct)
+- **Macro-F1 Score**: **0.910**
+- **Test Loss**: 0.1556
 
+> **Note on Sample Size**: A 216-image test set has roughly a 3 to 4 point margin of error.
 
-<br />
+The old result came from a split that could leak test images.
 
-**Key Technologies and Skills**
-- Python
-- TensorFlow
-- Convolutional Neural Network (CNN)
-- Keras
-- Numpy
-- Matplotlib
-- Streamlit
+### Per-Class Performance Table
 
-<br />
+| Class | Support | Precision | Recall | F1-Score |
+| :--- | :---: | :---: | :---: | :---: |
+| **Early Blight** (`Potato___Early_blight`) | 100 | 0.933 | 0.970 | 0.951 |
+| **Late Blight** (`Potato___Late_blight`) | 100 | 0.957 | 0.890 | 0.922 |
+| **Healthy** (`Potato___healthy`) | 16 | 0.789 | 0.938 | 0.857 |
+| **Macro Average** | **216** | **0.893** | **0.933** | **0.910** |
+| **Weighted Average** | **216** | **0.933** | **0.931** | **0.931** |
 
-**Installation**
+---
 
-To run this project, you need to install the following packages:
+### Confusion Matrix
 
-```python
-pip install tensorflow
-pip install opencv-python
-pip install pillow
-pip install numpy
-pip install matplotlib
-pip install streamlit
-pip install streamlit_extras
+![Confusion Matrix](assets/confusion_matrix.png)
+
+*Confusion matrix on the 216-image test set (normalized & raw counts).*
+
+---
+
+### Training & Validation Curves
+
+![Training Curves](assets/training_curves.png)
+
+*Training and validation loss and accuracy curves across epochs, with early stopping at epoch 25 (best checkpoint restored from epoch 18).*
+
+---
+
+## Installation & Local Execution
+
+### Prerequisites
+- Python 3.12 (matches production environment)
+- Virtual environment tool (`venv`)
+
+### 1. Clone & Set Up Virtual Environment
+
+```bash
+git clone https://github.com/Vinay-1105/Potato-Plant-Disease-Classification-model-Using-CNN.git
+cd Potato-Plant-Disease-Classification-model-Using-CNN
+
+python -m venv .venv
+# Windows:
+.\.venv\Scripts\activate
+# Linux/macOS:
+source .venv/bin/activate
 ```
 
-<br />
+### 2. Install Dependencies
 
-**Usage**
+Install production requirements for the Streamlit app:
+```bash
+pip install -r requirements.txt
+```
 
-To use this project, follow these steps:
+*(Optional) For notebook development and re-running evaluations, install development packages:*
+```bash
+pip install -r requirements-dev.txt
+```
 
-1. Install the required packages: ```pip install -r requirements.txt```
-2. Run the Streamlit app: ```streamlit run app.py```
-3. Access the app in your browser at ```http://localhost:8501```
+### 3. Run the Streamlit Application
 
-<br />
+```bash
+streamlit run app.py
+```
 
-**Features**
+The application will be accessible in your web browser at `http://localhost:8501`.
 
-#### Data Collection:
-   - We obtained the potato disease image dataset from Kaggle, a renowned platform for datasets and data science resources. This dataset consists of images depicting diseased potato plant leaves, meticulously labeled into categories such as early blight, healthy, and late blight.
+---
 
-   - This collection serves as a valuable asset for training and evaluating our deep learning model, facilitating the development of an effective solution for potato disease classification.
+## Deployment
 
-📙 Dataset Link: [https://www.kaggle.com/datasets/emmarex/plantdisease](https://www.kaggle.com/datasets/emmarex/plantdisease)
+The application is configured for deployment on **Streamlit Community Cloud**.
 
+When deploying:
+1. Select repository and branch `improvements`.
+2. Main file path: `app.py`.
+3. Select **Python 3.12** in advanced settings to match pinned package wheels.
 
-#### Preprocessing:
+---
 
-   - **Image Reading and Resizing:** We initiate the preprocessing phase by leveraging TensorFlow to read all images from the directory. Each image undergoes resizing to a standardized dimension of 256x256 pixels. Furthermore, we organize the processed images into batches with a size of 32, thus forming a structured dataset ready for subsequent analysis.
+## Limitations
 
-   - **Dataset Splitting:** To facilitate comprehensive model evaluation, we partition the dataset into three distinct subsets: training, validation, and testing. This segmentation ensures the robustness of our model's performance assessment by enabling separate training, validation, and testing phases, thus minimizing the risk of overfitting and enhancing generalization capabilities.
-
-   - **Data Pipeline Optimization:** In pursuit of efficient model training, we optimize the data pipeline using TensorFlow's built-in functionalities. The `cache` function is strategically employed to circumvent the repetitive loading and reading of training images across epochs. Concurrently, the `prefetch` function enhances training speed by proactively preparing subsequent batches of training images. These optimizations collectively streamline the training process, resulting in significant time savings and improved computational efficiency.
-
-
-#### Model Building and Training:
-
-   - **Model Building:** We construct the model architecture using Keras, incorporating layers for resizing, rescaling, random flip, and random rotation to preprocess the input images. Additionally, a Convolutional Neural Network (CNN) architecture is implemented, comprising convolutional layers, pooling layers, and dense layers with adjustable filters/units and activation functions.
-
-   - **Training:** During model training, we utilize the `Adam` optimizer, `sparse_categorical_crossentropy` loss function, and `Accuracy` metrics to optimize and evaluate the model's performance. The training process involves evaluating the model's performance on the validation dataset after each epoch, culminating in a final evaluation on the testing dataset. Upon completion of training, the model achieves an impressive accuracy of **95.8%**, signifying its capability to accurately classify potato disease images.
-
-
-#### Model Deployment and Inference:
-   - Following the completion of model training and evaluation, the trained model is saved to enable seamless deployment and inference on new images for classification purposes. To facilitate this process, a user-friendly Streamlit application is developed and deployed on the Hugging Face platform. 
-   - This application empowers users to upload new images and obtain real-time classification results, providing a convenient interface for leveraging the model's capabilities in practical scenarios.
-
+- **Lab-Style Dataset**: The model is trained on the PlantVillage dataset, which consists of detached leaves photographed against uniform, controlled backgrounds rather than natural field settings.
+- **Class Imbalance in Ground Truth**: The `Healthy` class contains only 152 images in total (16 in the test set) compared to 1,000 images each for Early Blight and Late Blight.
+- **Potential Subject Duplication in Source**: In the PlantVillage collection, multiple photographs may depict the same physical leaf under slight angle variations, meaning reported evaluation scores may be optimistic.
+- **Not Field-Tested**: The model has not been validated on unconstrained, in-field farm photographs with complex backgrounds, direct sunlight, pests, or secondary infections.
+- **Educational Scope**: This project is an academic learning demonstration, not an agronomic diagnostic tool. Agricultural decisions should always involve consultation with plant pathology experts.
