@@ -32,7 +32,7 @@ The old result came from a split that could leak test images.
 
 ![Confusion Matrix](assets/confusion_matrix.png)
 
-*Confusion matrix on the 216-image test set (normalized & raw counts).*
+*Confusion matrix on the 216-image test set (raw counts).*
 
 ---
 
