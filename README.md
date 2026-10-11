@@ -4,6 +4,8 @@ An end-to-end computer vision project to classify potato leaf images into **Earl
 
 ---
 
+**Live demo:** https://potato-plant-disease-classification-model-using-cnn-pb8r38v8ln.streamlit.app/
+
 ## Evaluation & Measured Results
 
 The model was evaluated on a held-out, leak-free test set of 216 images created via stratified 80/10/10 file-level partitioning:
@@ -148,5 +150,5 @@ When deploying:
 - **Class Imbalance in Ground Truth**: The `Healthy` class contains only 152 images in total (16 in the test set) compared to 1,000 images each for Early Blight and Late Blight.
 - **Potential Subject Duplication in Source**: In the PlantVillage collection, multiple photographs may depict the same physical leaf under slight angle variations, meaning reported evaluation scores may be optimistic.
 - **Not Field-Tested**: The model has not been validated on unconstrained, in-field farm photographs with complex backgrounds, direct sunlight, pests, or secondary infections.
-- **Out-of-Scope Detection**: The confidence threshold does not detect non-potato images. Synthetic non-potato test images were still assigned a disease class (one with 100% confidence, another with 66%), so the app is only valid for potato leaf photos.
+- **Out-of-Scope Detection**: The confidence threshold does not detect non-potato images. The model has only three outputs, so every image is forced into one of them. In live testing, a cartoon teddy bear image was classified as Late Blight with 100% confidence, and synthetic non-potato test images were also assigned disease classes. The app is only valid for potato leaf photos.
 - **Educational Scope**: This project is an academic learning demonstration, not an agronomic diagnostic tool. Agricultural decisions should always involve consultation with plant pathology experts.
